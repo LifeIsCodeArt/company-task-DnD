@@ -27,47 +27,45 @@
       imagePath: '../src/components/icons/person-icon.svg',
     }
   ])
+  
+    const  list1 = ref([
+          { id: 1, name: "ИП Бирюков Михаил Алексеевич", bank:'monobank', reason:'Выплаты', recipient:'Сайт Volkswagen', profit:true,
+            moneyChange:'+21 239 ₴', status: true, description:'Оплата за продвижение \n' +
+                'Google Adwords июнь-июль'},
+          { id: 2, name: "Роман Мельников", bank:'monobank', reason:'Зарплата сотрудникам', recipient:'ИП Eltron',  profit: false,
+            moneyChange:'-56 000 ₴', status: false, description:'Аванс Июль'},
+          { id: 3, name: "ООО «Кранкомплект»", bank:'monobank', reason:'Разработка', recipient:'Сайт Кранкомплект', profit: true,
+            moneyChange:'+170 000 ₴', status: true, description:'Аванс за разработку'}
+        ])
+    const  list2 = ref([
+          { id: 5, name: "Роман Мельников", bank:'monobank', reason:'Расходы на офис', recipient:'Обучение сотрудников', profit:false,
+            moneyChange:'-8 000 ₴', status: true, description:'Оплата обучения'},
+          { id: 6, name: "ООО «Кранкомплект»", bank:'monobank', reason:'Разработка', recipient:'Сайт Кранкомплект', profit:true,
+            moneyChange:'+170 000 ₴', status: true, description:'Аванс за разработку'},
+          { id: 7, name: "ИП Бирюков Михаил Алексеевич", bank:'monobank', reason:'Продвижение', recipient:'Сайт Volkswagen', profit:true,
+            moneyChange:'+21 239 ₴', status: true, description:'Оплата за продвижение \n' +
+                'Google Adwords июнь-июль'}
+        ])
 
 
-  export default {
-    name: "two-lists",
-    display: "Two Lists",
-    order: 1,
-    components: {
-      draggable
-    },
-    data() {
-      return {
-        list1: [
-          { name: "John", id: 1 },
-          { name: "Joao", id: 2 },
-          { name: "Jean", id: 3 },
-          { name: "Gerard", id: 4 }
-        ],
-        list2: [
-          { name: "Juan", id: 5 },
-          { name: "Edgard", id: 6 },
-          { name: "Johnson", id: 7 }
-        ]
-      };
-    },
-    methods: {
-      add: function() {
-        this.list.push({ name: "Juan" });
-      },
-      replace: function() {
-        this.list = [{ name: "Edgard" }];
-      },
-      clone: function(el) {
+  const add = function() {
+        this.list.value.push({ name: "Juan" });
+      }
+
+  const replace = function() {
+        this.list.value = [{ name: "Edgard" }];
+      }
+
+  let clone = function(el) {
         return {
-          name: el.name + " cloned"
+          name: el.name + "cloned"
         };
-      },
-      log: function(evt) {
+      }
+
+  const log = function(evt) {
         window.console.log(evt);
       }
-    }
-  };
+
   const activeSection = ref(1)
 </script>
 
@@ -157,7 +155,92 @@
                 </button>
               </div>
             </div>
-            <div class=""></div>
+            <div class="flex flex-col">
+                <div class="">
+                    <h1 class="text-[32px] pb-[13px] border-b">Сегодня, 10 июля</h1>
+                      <draggable
+                          class="list-group"
+                          :list="list1"
+                          group="people"
+                          @change="replace"
+                          itemKey="name"
+                      > 
+                          <template #item="{element}">
+                              <div class="w-[1056px] h-[70px] flex items-center">
+                                  <div class="w-[30px] h-[30px] rounded-l flex justify-center items-center ml-" :class="{'bg-[#D7EAE3]':element.profit,
+                                                                         'bg-[#FFD3C2]':!element.profit}">
+                                      <img v-if="element.profit" src="../components/icons/Vector%20(Stroke).svg" alt="" class="">
+                                      <img v-else src="../components/icons/Vector%20(Unstroke).svg" alt="" class="">
+                                  </div>
+                                  <div class="ml-[16px] w-[250px]">
+                                      <p class="text-[14px]">{{ element.name }}</p>
+                                      <p class="text-[12px] text-[#2E2E2E]"><span class="opacity-60">Со счёта: </span>{{ element.bank}}</p>
+                                  </div>
+                                  <div class="ml-[10px] w-[170px]">
+                                      <p class="text-[14px]">{{ element.recipient }}</p>
+                                      <p class="text-[12px] text-[#2E2E2E] opacity-60">{{ element.reason }}</p>
+                                  </div>
+                                  <div class="ml-[30px] text-[14px] w-[240px]" v-html="element.description.replaceAll('\n', `<br>`)">
+                                  </div>
+                                  <div class="ml-[60px] mr-[70px] w-[82px] h-[28px] text-[12px] rounded-xl flex justify-center items-center"
+                                                                   :class="{'bg-[#D7EAE3] text-[#167951]':element.status,
+                                                                   'bg-[#FFD3C2] text-[#E04F1A]':element.status === false}">
+                                      <p v-if="element.status" class="">Оплачен</p>
+                                      <p v-else class="">Не оплачен</p>
+                                  </div>
+                                  <div class="w-[120px] text-[16px]">
+                                    <p class="text-right" :class="{'text-[#1A8D5F]':element.profit,
+                                                           'text-[#E04F1A]':!element.profit}">{{element.moneyChange}}</p>
+                                  </div>
+                              </div>
+                          </template>
+                      </draggable>
+                </div>
+                <div class="">
+                    <h1 class="text-[32px] pb-[13px] border-b">Вчера, 9 июля</h1>
+                    <draggable
+                    class="list-group"
+                    :list="list2"
+                    group="people"
+                    @change="replace"
+                    itemKey="name"
+                >
+                      <template #item="{element}">
+                        <div class="w-[1056px] h-[70px] flex items-center">
+                          <div class="w-[30px] h-[30px] rounded-l flex justify-center items-center ml-" :class="{'bg-[#D7EAE3]':element.profit,
+                                                                         'bg-[#FFD3C2]':!element.profit}">
+                            <img v-if="element.profit" src="../components/icons/Vector%20(Stroke).svg" alt="" class="">
+                            <img v-else src="../components/icons/Vector%20(Unstroke).svg" alt="" class="">
+                          </div>
+                          <div class="ml-[16px] w-[250px]">
+                            <p class="text-[14px]">{{ element.name }}</p>
+                            <p class="text-[12px] text-[#2E2E2E]"><span class="opacity-60">Со счёта: </span>{{ element.bank}}</p>
+                          </div>
+                          <div class="ml-[10px] w-[170px]">
+                            <p class="text-[14px]">{{ element.recipient }}</p>
+                            <p class="text-[12px] text-[#2E2E2E] opacity-60">{{ element.reason }}</p>
+                          </div>
+                          <div class="ml-[30px] text-[14px] w-[240px]" v-html="element.description.replaceAll('\n', `<br>`)">
+                          </div>
+                          <div class="ml-[60px] mr-[70px] w-[82px] h-[28px] text-[12px] rounded-xl flex justify-center items-center"
+                               :class="{'bg-[#D7EAE3] text-[#167951]':element.status,
+                                                                   'bg-[#FFD3C2] text-[#E04F1A]':element.status === false}">
+                            <p v-if="element.status" class="">Оплачен</p>
+                            <p v-else class="">Не оплачен</p>
+                          </div>
+                          <div class="w-[120px] text-[16px]">
+                            <p class="text-right" :class="{'text-[#1A8D5F]':element.profit,
+                                                           'text-[#E04F1A]':!element.profit}">{{element.moneyChange}}</p>
+                          </div>
+                        </div>
+                      </template>
+                    </draggable>
+                </div>
+              <RawDisplayer class="col-3" :value="list1" title="List 1" />
+
+              <RawDisplayer class="col-3" :value="list2" title="List 2" />
+            </div>
+
       </div>
     <div class="ml-[16px]  h-[748px] bg-[#F5F5F5] rounded-xl  pt-[27px]">
         <div class="px-[36px]">
