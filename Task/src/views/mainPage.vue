@@ -29,23 +29,20 @@
   ])
   
     const  list1 = ref([
-          { id: 1, name: "ИП Бирюков Михаил Алексеевич", bank:'monobank', reason:'Выплаты', recipient:'Сайт Volkswagen', profit:true,
-            moneyChange:'+21 239 ₴', status: true, description:'Оплата за продвижение \n' +
-                'Google Adwords июнь-июль'},
-          { id: 2, name: "Роман Мельников", bank:'monobank', reason:'Зарплата сотрудникам', recipient:'ИП Eltron',  profit: false,
-            moneyChange:'-56 000 ₴', status: false, description:'Аванс Июль'},
-          { id: 3, name: "ООО «Кранкомплект»", bank:'monobank', reason:'Разработка', recipient:'Сайт Кранкомплект', profit: true,
-            moneyChange:'+170 000 ₴', status: true, description:'Аванс за разработку'}
+          { id: 1, name: "ИП Бирюков Михаил Алексеевич", information:[{bank:'monobank'}, {reason:'Выплаты'}, {recipient:'Сайт Volkswagen'},
+              {profit:true}, {moneyChange:'+21 239 ₴'}, {status: true}, {description:'Оплата за продвижение \n' + 'Google Adwords июнь-июль'}]},
+          { id: 2, name: "Роман Мельников", information:[{bank:'monobank'}, {reason:'Зарплата сотрудникам'},
+              {recipient:'ИП Eltron'},  {profit: false}, {moneyChange:'-56 000 ₴'}, {status: false}, {description:'Аванс Июль'}]},
+          { id: 3, name: "ООО «Кранкомплект»", information:[{bank:'monobank'}, {reason:'Разработка'}, {recipient:'Сайт Кранкомплект'},
+              {profit: true}, {moneyChange:'+170 000 ₴'}, {status: true}, {description:'Аванс за разработку'}]}
         ])
     const  list2 = ref([
-          { id: 5, name: "Роман Мельников", bank:'monobank', reason:'Расходы на офис', recipient:'Обучение сотрудников', profit:false,
-            moneyChange:'-8 000 ₴', status: true, description:'Оплата обучения'},
-          { id: 6, name: "ООО «Кранкомплект»", bank:'monobank', reason:'Разработка', recipient:'Сайт Кранкомплект', profit:true,
-            moneyChange:'+170 000 ₴', status: true, description:'Аванс за разработку'},
-          { id: 7, name: "ИП Бирюков Михаил Алексеевич", bank:'monobank', reason:'Продвижение', recipient:'Сайт Volkswagen', profit:true,
-            moneyChange:'+21 239 ₴', status: true, description:'Оплата за продвижение \n' +
-                'Google Adwords июнь-июль'}
-        ])
+          { id: 5, name: "Роман Мельников", information:[{bank:'monobank'}, {reason:'Зарплата сотрудникам'},
+          {recipient:'ИП Eltron'}, {profit: false}, {moneyChange:'-56 000 ₴'}, {status: false}, {description:'Аванс Июль'}]},
+          { id: 6, name: "ООО «Кранкомплект»", information:[{bank:'monobank'}, {reason:'Разработка'}, {recipient:'Сайт Кранкомплект'},
+          {profit: true}, {moneyChange:'+170 000 ₴'}, {status: true}, {description:'Аванс за разработку'}]},
+          { id: 7, name: "ИП Бирюков Михаил Алексеевич", information:[{bank:'monobank'}, {reason:'Выплаты'}, {recipient:'Сайт Volkswagen'},
+          {profit:true}, {moneyChange:'+21 239 ₴'}, {status: true}, {description:'Оплата за продвижение \n' + 'Google Adwords июнь-июль'}]}])
 
 
   const add = function() {
@@ -70,7 +67,7 @@
 </script>
 
 <template>
-  <div class="w-[1440px] flex h-full mx-auto py-[26px] px-[36px] border-2 border-gray-900 relative">
+  <div class="w-[1440px] flex h-full mx-auto py-[26px] px-[36px] relative">
       <div class="">
           <div class="flex">
               <div class="flex">
@@ -141,7 +138,7 @@
                         @click="activeSection = 1"
                         :class="{'disabled: h-[31px] w-[125px] rounded-xl border text-[#2E2E2E]cursor-not-allowed  pointer-events-none bg-[#EEEEEE] font-semibold pointer-events:none':activeSection === 1,
                                 'text-[#2E2E2E] bg-white font-normal hover:duration-500 hover:bg-[#EEEEEE] hover:font-semibold':activeSection !== 1}"
-                        >Все операции
+                >Все операции
                 </button>
                 <button class="h-[31px] mx-[8px] w-[90px] rounded-xl border text-[#2E2E2E] hover:duration-500 hover:bg-[#EEEEEE] hover:font-semibold outline-none"
                         :class="{'disabled:cursor-not-allowed  pointer-events-none bg-[#EEEEEE] font-semibold  pointer-events:none':activeSection === 2,
@@ -167,78 +164,82 @@
                       > 
                           <template #item="{element}">
                               <div class="w-[1056px] h-[70px] flex items-center">
-                                  <div class="w-[30px] h-[30px] rounded-l flex justify-center items-center ml-" :class="{'bg-[#D7EAE3]':element.profit,
-                                                                         'bg-[#FFD3C2]':!element.profit}">
-                                      <img v-if="element.profit" src="../components/icons/Vector%20(Stroke).svg" alt="" class="">
+                                  <div class="w-[30px] h-[30px] rounded-l flex justify-center items-center ml-"
+                                       :class="{'bg-[#D7EAE3]':element.information[3].profit,'bg-[#FFD3C2]':!element.information[3].profit}">
+                                      <img v-if="element.information[3].profit" src="../components/icons/Vector%20(Stroke).svg" alt="" class="">
                                       <img v-else src="../components/icons/Vector%20(Unstroke).svg" alt="" class="">
                                   </div>
                                   <div class="ml-[16px] w-[250px]">
                                       <p class="text-[14px]">{{ element.name }}</p>
-                                      <p class="text-[12px] text-[#2E2E2E]"><span class="opacity-60">Со счёта: </span>{{ element.bank}}</p>
+                                      <p class="text-[12px] text-[#2E2E2E]">
+                                        <span class="opacity-60">Со счёта:</span>{{ element.information[0].bank }}</p>
                                   </div>
                                   <div class="ml-[10px] w-[170px]">
-                                      <p class="text-[14px]">{{ element.recipient }}</p>
-                                      <p class="text-[12px] text-[#2E2E2E] opacity-60">{{ element.reason }}</p>
+                                      <p class="text-[14px]">{{ element.information[2].recipient }}</p>
+                                      <p class="text-[12px] text-[#2E2E2E] opacity-60">{{ element.information[1].reason }}</p>
                                   </div>
-                                  <div class="ml-[30px] text-[14px] w-[240px]" v-html="element.description.replaceAll('\n', `<br>`)">
+                                  <div class="ml-[30px] text-[14px] w-[240px]" v-html="element.information[6].description.replaceAll('\n', `<br>`)">
                                   </div>
                                   <div class="ml-[60px] mr-[70px] w-[82px] h-[28px] text-[12px] rounded-xl flex justify-center items-center"
-                                                                   :class="{'bg-[#D7EAE3] text-[#167951]':element.status,
-                                                                   'bg-[#FFD3C2] text-[#E04F1A]':element.status === false}">
-                                      <p v-if="element.status" class="">Оплачен</p>
+                                                                   :class="{'bg-[#D7EAE3] text-[#167951]':element.information[5].status,
+                                                                   'bg-[#FFD3C2] text-[#E04F1A]':element.information[5].status === false}">
+                                      <p v-if="element.information[5].status" class="">Оплачен</p>
                                       <p v-else class="">Не оплачен</p>
                                   </div>
                                   <div class="w-[120px] text-[16px]">
-                                    <p class="text-right" :class="{'text-[#1A8D5F]':element.profit,
-                                                           'text-[#E04F1A]':!element.profit}">{{element.moneyChange}}</p>
+                                    <p class="text-right" :class="{'text-[#1A8D5F]':element.information[3].profit,
+                                                           'text-[#E04F1A]':!element.information[3].profit}">
+                                      {{element.information[4].moneyChange}}</p>
                                   </div>
                               </div>
                           </template>
                       </draggable>
                 </div>
-                <div class="">
-                    <h1 class="text-[32px] pb-[13px] border-b">Вчера, 9 июля</h1>
-                    <draggable
+              <div class="">
+                <h1 class="text-[32px] pb-[13px] border-b">Вчера, 9 июля</h1>
+                <draggable
                     class="list-group"
                     :list="list2"
                     group="people"
                     @change="replace"
                     itemKey="name"
                 >
-                      <template #item="{element}">
-                        <div class="w-[1056px] h-[70px] flex items-center">
-                          <div class="w-[30px] h-[30px] rounded-l flex justify-center items-center ml-" :class="{'bg-[#D7EAE3]':element.profit,
-                                                                         'bg-[#FFD3C2]':!element.profit}">
-                            <img v-if="element.profit" src="../components/icons/Vector%20(Stroke).svg" alt="" class="">
-                            <img v-else src="../components/icons/Vector%20(Unstroke).svg" alt="" class="">
-                          </div>
-                          <div class="ml-[16px] w-[250px]">
-                            <p class="text-[14px]">{{ element.name }}</p>
-                            <p class="text-[12px] text-[#2E2E2E]"><span class="opacity-60">Со счёта: </span>{{ element.bank}}</p>
-                          </div>
-                          <div class="ml-[10px] w-[170px]">
-                            <p class="text-[14px]">{{ element.recipient }}</p>
-                            <p class="text-[12px] text-[#2E2E2E] opacity-60">{{ element.reason }}</p>
-                          </div>
-                          <div class="ml-[30px] text-[14px] w-[240px]" v-html="element.description.replaceAll('\n', `<br>`)">
-                          </div>
-                          <div class="ml-[60px] mr-[70px] w-[82px] h-[28px] text-[12px] rounded-xl flex justify-center items-center"
-                               :class="{'bg-[#D7EAE3] text-[#167951]':element.status,
-                                                                   'bg-[#FFD3C2] text-[#E04F1A]':element.status === false}">
-                            <p v-if="element.status" class="">Оплачен</p>
-                            <p v-else class="">Не оплачен</p>
-                          </div>
-                          <div class="w-[120px] text-[16px]">
-                            <p class="text-right" :class="{'text-[#1A8D5F]':element.profit,
-                                                           'text-[#E04F1A]':!element.profit}">{{element.moneyChange}}</p>
-                          </div>
-                        </div>
-                      </template>
-                    </draggable>
-                </div>
-              <RawDisplayer class="col-3" :value="list1" title="List 1" />
+                  <template #item="{element}">
+                    <div class="w-[1056px] h-[70px] flex items-center">
+                      <div class="w-[30px] h-[30px] rounded-l flex justify-center items-center ml-"
+                           :class="{'bg-[#D7EAE3]':element.information[3].profit,'bg-[#FFD3C2]':!element.information[3].profit}">
+                        <img v-if="element.information[3].profit" src="../components/icons/Vector%20(Stroke).svg" alt="" class="">
+                        <img v-else src="../components/icons/Vector%20(Unstroke).svg" alt="" class="">
+                      </div>
+                      <div class="ml-[16px] w-[250px]">
+                        <p class="text-[14px]">{{ element.name }}</p>
+                        <p class="text-[12px] text-[#2E2E2E]">
+                          <span class="opacity-60">Со счёта:</span>{{ element.information[0].bank }}</p>
+                      </div>
+                      <div class="ml-[10px] w-[170px]">
+                        <p class="text-[14px]">{{ element.information[2].recipient }}</p>
+                        <p class="text-[12px] text-[#2E2E2E] opacity-60">{{ element.information[1].reason }}</p>
+                      </div>
+                      <div class="ml-[30px] text-[14px] w-[240px]" v-html="element.information[6].description.replaceAll('\n', `<br>`)">
+                      </div>
+                      <div class="ml-[60px] mr-[70px] w-[82px] h-[28px] text-[12px] rounded-xl flex justify-center items-center"
+                           :class="{'bg-[#D7EAE3] text-[#167951]':element.information[5].status,
+                                                                   'bg-[#FFD3C2] text-[#E04F1A]':element.information[5].status === false}">
+                        <p v-if="element.information[5].status" class="">Оплачен</p>
+                        <p v-else class="">Не оплачен</p>
+                      </div>
+                      <div class="w-[120px] text-[16px]">
+                        <p class="text-right" :class="{'text-[#1A8D5F]':element.information[3].profit,
+                                                           'text-[#E04F1A]':!element.information[3].profit}">
+                          {{element.information[4].moneyChange}}</p>
+                      </div>
+                    </div>
+                  </template>
+                </draggable>
+              </div>
+              <RawDisplayer class="col-3" :value="list1" title="List 1"/>
 
-              <RawDisplayer class="col-3" :value="list2" title="List 2" />
+              <RawDisplayer class="col-3" :value="list2" title="List 2"/>
             </div>
 
       </div>
@@ -280,7 +281,7 @@
               </ul>
           </div>
         </div>
-          <div class="h-[86px] py-[22px] pl-[26px] pr-[42px] border bg-[#EEEEEE] relative">
+          <div class="h-[89px] py-[22px] pl-[26px] pr-[42px] rounded border-l bg-[#EEEEEE] relative">
               <div class="flex">
                   <div class=" pt-[3px] ">
                       <img src="../components/images/avatar.png" alt="" class="">
@@ -294,10 +295,10 @@
               <img src="../components/icons/help.svg" alt="" class="absolute bottom-4 right-[32px] outline-none">
           </div>
 
-    </div>
-    <div class="absolute text-[32px] pb-[7px] bottom-[32px] w-[66px] h-[66px] bg-[#2E2E2E] rounded-[50%] flex justify-center items-center text-white cursor-pointer outline-none">
-      +
-    </div>
+        </div>
+        <div class="absolute text-[32px] pb-[7px] bottom-[32px] w-[66px] h-[66px] bg-[#2E2E2E] rounded-[50%] flex justify-center items-center text-white cursor-pointer outline-none">
+        +
+        </div>
   </div>
 </template>
 
